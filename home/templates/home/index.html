@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Amphibians Worldwide {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+  <p class="panel-tabs">
+    <a href="{% url 'home:taxonomy' %}"><strong>Taxonomy</strong></a>
+    <a href="{% url 'home:location' %}"><strong>Location</strong></a>
+    <a href="{% url 'home:micro_habitat' %}"><strong>Micro-Habitat</strong></a>
+    <a href="{% url 'home:activity' %}"><strong>Activity</strong></a>
+  </p>
+
+
+
+  <form method="POST" action="{% url 'home:search_species_latin' %}">
+    {% csrf_token %}
+    <div class="field is-grouped is-grouped-centered has-addons">
+      <p class="control has-icons-left">
+        <input class="input is-info" type="text" placeholder="Search by latin name..." name="searched">
+        <span class="icon is-left">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+      <div class="control">
+        <button class="button is-success has-text-info">Search</button>
+      </div>
+    </div>
+  </form>
+
+  <p class="panel-tabs">
+    <a href="{% url 'home:population_trend' %}"><strong>Population Trend</strong> </a>
+    <a href="{% url 'home:iucn' %}"><strong>IUCN</strong> </a>
+    <a href="{% url 'home:nesting_site' %}"><strong>Nesting Site</strong></a>
+    <a href="{% url 'home:parity_mode' %}"><strong>Parity Mode</strong></a>
+  </p>
+
+
+</article>
+
+{% if messages %}
+{% for message in messages %}
+<article class="message is-info">
+  <div class="message-header">
+  </div>
+  <div class="message-body has-text-centered">
+    {{ message }}
+  </div>
+</article>
+{% endfor %}
+{% endif %}
+
+<section class="section">
+
+
+  <div class="container">
+    {% if user.is_authenticated %}
+    <div class="columns">
+      <div class="column is-full is-centered has-text-centered ">
+        <p class="is-size-3 is-family-sans-serif has-text-danger"><strong>Welcome Back {{user.first_name}}!</strong></p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third is-offset-one-third ">
+        {% if user.user_profile.profile_image %}
+        <figure class="image is-4by3">
+          <img class="is-rounded" src="{{ user.user_profile.profile_image.url }}">
+        </figure>
+        {% else %}
+        <figure class="image is-4by3">
+          <img class="is-rounded" src="{% static 'home/images/user_profile.jpg' %}">
+        </figure>
+        {% endif %}
+      </div>
+
+      {% else %}
+      <div class="column is-one-third is-offset-one-third ">
+        <figure class="image is-4by3">
+          <img class="is-rounded" src="{% static 'home/images/index_img.jpg' %}">
+        </figure>
+      </div>
+
+      <div class="column is-full is-centered has-text-centered">
+        <div class="content is-large pt-6">
+          <p></p>
+          <p></p>
+          <p> Have a browse through the world's largest collection of Amphibians! </p>
+          <p>Interested in contributing data? <a href="{% url 'home:signup' %}">Sign up </a>and submit your findings!
+          </p>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+
+    <div class="columns is-mobile">
+      {% if user.is_authenticated and user.is_staff %}
+      <div class="column is-full is-centered has-text-centered">
+        <div class="content is-large pt-6">
+          <a class="button is-dark has-text-white" href="{% url 'home:data_summary' %}">
+            Current Data Summary
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+</section>
+
+
+
+{% endblock %}

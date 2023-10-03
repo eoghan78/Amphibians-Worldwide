@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %} Taxonomy Search {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-diagram-project"></i>
+        </span>
+        <span><strong>Taxonomy</strong>
+        </span></a></li>
+
+  </ul>
+</nav>
+
+<section class="section">
+  <div class="container">
+
+    <div class="columns is-mobile">
+      <div class="columns is-multiline  is-centered has-text-centered">
+        <div class="column is-one-quarter is-centered">
+          <div class="card csscard csscard-nav has-background-light">
+
+            <div class="card-image csscardimage-nav csscardimage">
+              <figure class="image is-960x960">
+                <img src="">
+              </figure>
+            </div>
+
+            <div class="content">
+              <p class="title is-4">Order</p>
+            </div>
+
+            <div class="content">
+            </div>
+
+            <footer class="card-footer has-background-warning">
+              <a href="{% url 'home:tax_order' %}" class="card-footer-item"><strong>Order List</strong></a>
+            </footer>
+          </div>
+        </div>
+
+        <div class="column is-one-quarter">
+          <div class="card csscard has-background-light">
+
+            <div class="card-image csscardimage">
+              <figure class="image is-960x960">
+                <img src="">
+              </figure>
+            </div>
+
+            <div class="content">
+              <p class="title is-4">Family</p>
+            </div>
+
+            <div class="content">
+            </div>
+
+            <footer class="card-footer has-background-warning">
+              <a href="{% url 'home:tax_family' %}" class="card-footer-item"><strong>Family List</strong></a>
+            </footer>
+          </div>
+        </div>
+
+        <div class="column is-one-quarter">
+          <div class="card csscard has-background-light">
+
+            <div class="card-image csscardimage">
+              <figure class="image is-960x960">
+                <img src="">
+              </figure>
+            </div>
+
+            <div class="content">
+              <p class="title is-4">Genus</p>
+            </div>
+
+            <div class="content">
+            </div>
+
+            <footer class="card-footer has-background-warning">
+              <a href="{% url 'home:tax_genus' %}" class="card-footer-item"><strong>Genus List</strong></a>
+            </footer>
+          </div>
+        </div>
+
+        <div class="columns is-mobile">
+
+          <div class="column is-full is-centered has-text-left">
+            <p> <strong>Taxonomy</strong>, the classification of living
+              and extinct organisms—i.e., biological classification. The term is derived from the Greek taxis
+              (“arrangement”) and nomos (“law”).
+              <br> Taxonomy is, therefore, the methodology and principles of systematic botany and zoology and sets up arrangements of the kinds of plants and animals in hierarchies 
+              <br> of superior and subordinate groups. Among biologists the Linnaean system of binomial nomenclature, created by Swedish naturalist Carolus Linnaeus in the 1750s,
+              <br> is internationally accepted.
+            </p>
+          </div>
+          
+        </div>
+
+
+      </div>
+</section>
+
+{% endblock %}

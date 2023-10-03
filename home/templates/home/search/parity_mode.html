@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Parity Mode Search {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-baby-carriage"></i>
+        </span>
+        <span><strong>Parity Mode</strong>
+        </span></a></li>
+
+  </ul>
+</nav>
+
+
+
+<section class="section">
+  <div class="container">
+
+    <div class="columns is-mobile">
+      <div class="column is-full is-centered has-text-centered">
+        <p><strong>Parity Mode</strong> is the method by which an organism reproduces </p>
+      </div>
+    </div>
+
+    <div class="columns is-multiline  is-mobile">
+      {% for parity_mode in parity_mode_list %}<div class="column is-one-quarter is-centered has-text-centered">
+        <div class="card csscard csscard-nav has-background-light">
+
+          <div class="card-image csscardimage-nav  csscardimage">
+            {% if parity_mode.parity_mode_desc == 'Buccal' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/buccal1.jpg' %}">
+            </figure>
+
+            {% elif parity_mode.parity_mode_desc == 'Direct'%}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/direct.jpg' %}">
+            </figure>
+
+            {% elif parity_mode.parity_mode_desc == 'Larval'%}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/larval1.jpg' %}">
+            </figure>
+
+            {% elif parity_mode.parity_mode_desc == 'Semi-direct'%}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/semi-direct.jpg' %}">
+            </figure>
+
+            {% elif parity_mode.parity_mode_desc == 'Viviparous'%}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/viviparous.jpg' %}">
+            </figure>
+
+            {% else %}
+            <figure class="image is-960x960">
+              <img src="">
+            </figure>
+            {% endif %}
+          </div>
+
+          <div class='content'>
+            <p class='title is-4'>{{ parity_mode.parity_mode_desc }}</p>
+          </div>
+
+          <div class='content'>
+          </div>
+
+          <footer class='card-footer has-background-warning'>
+            <a href="{% url 'home:species_parity_mode' parity_mode_id=parity_mode.parity_mode_id %}"
+              class='card-footer-item'><strong>Species</strong></a>
+          </footer>
+          
+        </div>
+      </div>
+      {% endfor %}
+
+
+</section>
+
+{% endblock %}

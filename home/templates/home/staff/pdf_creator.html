@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ species.species_name_latin }} {% endblock %}
+{% block content %}
+
+
+Species: {{ species.species_name_latin }} <br>
+<hr>
+Genus: {{ species.genus.genus_name }}
+<hr>
+
+{% if species.img_uri_male%}
+<img src="media/{{ species.img_uri_male }}"> <br>
+{% else %}
+No image available <br>
+{% endif %}
+<hr>
+
+{% if species.img_uri_female%}
+<img src="media/{{ species.img_uri_female }}"><br>
+{% else %}
+No image available<br>
+{% endif %}
+<hr>
+
+Submitted by: {{species.user.username }} <br>
+<hr>
+Parity Mode: {{ species.parity_mode.parity_mode_desc }}<br>
+<hr>
+Conservation Status: {{ species.iucn.iucn_status }} <br>
+<hr>
+
+Activity: {% for activities in species.activity_set.all %}
+{{ activities.activity_kind }},
+{% endfor %} <br>
+<hr>
+
+Habitat: {% for micro_habitats in species.micro_habitat_set.all %}
+{{ micro_habitats.micro_habitat_name }},
+{% endfor %}<br>
+<hr>
+
+Maximum Size Male: {{ species.size_max_male }} <br>
+<hr>
+Maximum Size Female: {{ species.size_max_female }} <br>
+<hr>
+
+{% if species.size_max_male and species.size_max_female %}
+Sexual Size Dimorphism: {{species.find_ssd}}
+{% else %}
+Sexual Size Dimorphism: Not enough data
+{% endif %}
+<hr>
+
+Maximum Size Record: {{ species.size_max_record }} <br>
+<hr>
+Longevity: {{ species.longevity }} <br>
+<hr>
+Minimum Clutch: {{ species.clutch_min }}<br>
+<hr>
+Maximum Clutch: {{ species.clutch_max }}<br>
+<hr>
+Average Clutch: {{ species.clutch_avg }}<br>
+<hr>
+Egg Diameter: {{ species.egg_diameter }} <br>
+<hr>
+Range Size: {{ species.range_size }} <br>
+<hr>
+Minimum Elevation: {{ species.elevation_min }} <br>
+<hr>
+Maximum Elevation: {{ species.elevation_max }} <br>
+<hr>
+Average Elevation: {{ species.elevation_avg }} <br>
+<hr>
+
+{% endblock %}

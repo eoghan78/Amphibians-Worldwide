@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %} Genus Search {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li><a href="{% url 'home:taxonomy' %}" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-diagram-project"></i>
+        </span>
+        <span><strong>Taxonomy</strong>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-people-group"></i>
+        </span>
+        <span><strong>Genus</strong>
+        </span></a></li>
+
+  </ul>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline  is-mobile">
+      {% for genus in genus_list %}
+      <div class="column is-one-quarter has-text-centered">
+        <div class="card csscard csscard-nav has-background-light">
+
+          <div class="card-image csscardimage-nav  csscardimage">
+            <figure class="image is-960x960">
+              <img src="">
+            </figure>
+          </div>
+
+          <div class='content'>
+            <p class='title is-4'>{{ genus.genus_name }}</p>
+          </div>
+
+          <div class='content'>
+          </div>
+          
+          <footer class='card-footer has-background-warning'>
+            <a href="{% url 'home:species_genus' genus_id=genus.genus_id %}"
+              class='card-footer-item'><strong>Species</strong></a>
+          </footer>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+</section>
+
+{% endblock %}

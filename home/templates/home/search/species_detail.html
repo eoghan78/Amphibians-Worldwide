@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ species_list.genus.genus_name }} {{ species_list.species_name_latin }} {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+
+{% if messages %}
+{% for message in messages %}
+<article class="message is-info">
+  <div class="message-header">
+    <p>Success!</p>
+  </div>
+  <div class="message-body">
+    {{ message }}
+  </div>
+</article>
+{% endfor %}
+{% endif %}
+
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li><a href="javascript:history.back()" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <span><strong>Filtered By</strong>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>{{species_list.species_name_latin}}</strong>
+        </span></a></li>
+
+  </ul>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline  is-mobile">
+      
+      <div class="column is-full is-centered">
+        <section class="hero is-link">
+          <div class="hero-body">
+            <p class="title">
+              {{ species_list.genus.genus_name }} {{ species_list.species_name_latin }}
+            </p>
+          </div>
+        </section>
+      </div>
+
+        <div class="column is-half">
+          <div class="card csscard has-background-light">
+  
+            <div class="content cardcontent">
+              <p class="title is-4">Male</p>
+            </div>
+  
+            <div class="card-image csscardimage">
+              {% if species_list.img_uri_male%}
+              <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{{ species_list.img_uri_male.url }}">
+            </figure>
+              {% else %}
+              <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{% static 'home/images/male_frog.jpg' %}">
+            </figure>
+              {% endif %}
+            </div>
+            </div>
+          </div>
+       
+
+        <div class="column is-half">
+          <div class="card csscard has-background-light">
+  
+            <div class="content cardcontent">
+              <p class="title is-4">Female</p>
+            </div>
+  
+            <div class="card-image csscardimage">
+              {% if species_list.img_uri_female%}
+              <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+                <img src="{{ species_list.img_uri_female.url }}">
+            </figure>
+              {% else %}
+              <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+                <img src="{% static 'home/images/female_frog.jpg' %}">
+            </figure>
+              {% endif %}
+            </div>
+            </div>
+          </div>
+      
+
+
+      <div class="column is-half">
+
+        <p><strong>Family: </strong> {% for family in family_list %} {% if family.family_name %} {{ family.family_name }}{% else %}No Data{% endif %}{% endfor %}</p>
+
+        <p><strong>Order: </strong>{% for order in order_list %} {% if order.order_taxon_name %} {{order.order_taxon_name }}{% else %}No Data{% endif %}{% endfor %} </p>
+
+        {% if species.iucn.iucn_status %}
+        <p><strong>Conservation Status: </strong> {{ species.iucn.iucn_status }} </p>
+        {% else %}
+        <p><strong>Conservation Status: </strong>No Data</p>
+        {% endif %}
+
+        <p><strong>Activity: </strong> {% for activities in species_list.activity_set.all %}
+          {{ activities.activity_kind }},
+          {% endfor %}</p>
+
+        <p><strong>Habitat: </strong> {% for micro_habitats in species_list.micro_habitat_set.all %}
+          {{ micro_habitats.micro_habitat_name }},
+          {% endfor %} </p>
+      </div>
+
+      <div class="column is-half">
+        {% for locations in species_list.geo_location_set.all %} <strong>Distribution: </strong>
+        <p>Continent: {% if locations.country.continent_name == 'Nocontinent' %}
+          No Data
+          {% else %}
+          {{ locations.country.continent.continent_name }},
+          {% endif %}
+        </p>
+
+        <p>Country:
+          {% if locations.country.country_name == 'Nocountry' %}
+          No Data
+          {% else %}
+          {{ locations.country.country_name }},
+          {% endif %}
+        </p>
+
+        <p>Region: {% if locations.region_name == 'Noregion' %}
+          No Data
+          {% else %} {{ locations.region_name }} {% endif %} </p>
+
+        <p>Latitude: {{ locations.latitude }} </p>       
+        <p>Longitude: {{ locations.longitude }}</p>
+        </p>{% endfor %}
+
+        {% if species_list.range_size %}
+        <p><strong>Range size: </strong> {{ species_list.range_size }}</p>
+        {% else %}
+        <p><strong>Range size: </strong>No data</p>
+        {% endif %}
+      </div>
+
+      <div class="column is-half">
+        <p><strong>Elevation: </strong></p>
+        <p>Maximum Elevation - {% if species_list.elevation_max %} {{ species_list.elevation_max }}{% else %} No data {% endif %} <br>
+          Minimum Elevation -{% if species_list.elevation_min %} {{ species_list.elevation_min}}{% else %} No data {% endif %}<br>
+          Average Elevation -{% if species_list.elevation_avg %} {{ species_list.elevation_avg }}{% else %} No data {% endif %}</p>
+
+        <p><strong>SVL: </strong> </p>
+        <p>Maximum - {% if species_list.size_max_record %} {{ species_list.size_max_record }}{% else %} No data {% endif %} <br>
+          Male - {% if species_list.size_max_male %} {{ species_list.size_max_male }} {% else %} No data {% endif %}
+          <br>
+          Female - {% if species_list.size_max_female %} {{ species_list.size_max_female }} {% else %} No data {% endif %}</p>
+
+        {% if species_list.size_max_male and species_list.size_max_female %}
+        <p>Sexual Size Dimorphism: {{species_list.find_ssd}}</p>
+        {% else %}
+        <p>Sexual Size Dimorphism: Not enough data</p>
+        {% endif %}
+        <p><strong>Longevity: </strong>{% if species_list.longevity %} {{ species_list.longevity }} {% else %} No data
+          {% endif %}</p>
+
+      </div>
+
+      <div class="column is-half">
+        <p><strong> Reproduction: </strong> </p>
+        <p>Parity - {% if species_list.parity_mode.parity_mode_desc %} {{ species_list.parity_mode.parity_mode_desc }}
+          {% else %} No data {% endif %}</p>
+
+        <p>Nesting Site - {% for nesting_sites in species_list.nesting_site_set.all %}
+          {{ nesting_sites.nesting_site_desc }}
+          {% endfor %}</p>
+
+        <p>Maximum Egg Clutch: {% if species_list.clutch_max %} {{ species_list.clutch_max }} {% else %} No data {% endif %}</p>
+
+        <p>Minimum Egg Clutch:{% if species_list.clutch_min %} {{ species_list.clutch_min }} {% else %} No data {% endif %}</p>
+
+        <p>Average Egg Clutch:{% if species_list.clutch_avg %} {{ species_list.clutch_avg }} {% else %} No data {% endif %}</p>
+
+        <p>Egg Diameter:{% if species_list.egg_diameter %} {{ species_list.egg_diameter }} mm {% else %} No data {% endif %}</p>
+
+        <p><strong> Population ecology: </strong> </p>
+
+        <p>Population Trend- {% if species_list.pop_trend.pop_trend_status %} {{ species_list.pop_trend.pop_trend_status }} {% else %} No data {% endif %}</p>
+      </div>
+
+    </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+{% endblock %}

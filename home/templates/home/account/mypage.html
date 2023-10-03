@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} My Page {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+    <i class="fa-solid fa-frog"></i>
+    </span>
+    <span><strong>Amphibians Worldwide</strong></span>
+    <span class="icon is-small">
+    <i class="fa-solid fa-earth-europe"></i>
+    </span></a></li>
+
+    <li><a href="javascript:history.back()" aria-current="page"><span class="icon is-small">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </span>
+    <span><strong>Filtered By</strong>
+    </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+      <i class="fa-solid fa-user"></i>
+    </span>
+    <span><strong>{{user.username}}'s Page</strong>
+    </span>
+  </a></li>
+    
+  </ul>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="column is-one-third is-offset-one-third is-centered">
+      <div class="box">
+        <div class="image image-user">
+          <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+            {% if user.user_profile.profile_image %}
+            <img src="{{ user.user_profile.profile_image.url }}" alt="Image">
+            {% else %}
+            <img src="{% static 'home/images/user_profile.jpg' %}" alt="Image">
+            {% endif %}
+          </figure>
+        </div>
+
+        <div class="content">
+          <nav class="level is-mobile">
+            <div class="level-left">
+              <p class="level-item">
+                <strong>{{ user.user_profile.educational_institution }}</strong>
+              </p>
+
+            </div>
+          </nav>
+
+          {% if user.user_profile.academia_publication %}
+          <p class="subtitle is-6"><strong>academia.edu: </strong></p>
+          <a href="{{ user.user_profile.academia_publication }}"> academia.edu</a>
+          {% endif %}
+          {% if user.user_profile.publication_1 %}
+          <p class="subtitle is-6"><strong>Publications: </strong></p>
+          <a href="{{ user.user_profile.publication_1 }}"> Publication 1</a>
+          {% endif %}
+          {% if user.user_profile.publication_2 %}
+          <a href="{{ user.user_profile.publication_2 }}"> Publication 2</a>
+          {% endif %}
+          {% if user.user_profile.publication_3 %}
+          <a href="{{ user.user_profile.publication_3 }}"> Publication 3</a>
+          {% endif %}
+          {% if user.user_profile.publication_4 %}
+          <a href="{{ user.user_profile.publication_4 }}"> Publication 4</a>
+          {% endif %}
+          {% if user.user_profile.publication_5 %}
+          <a href="{{ user.user_profile.publication_5 }}"> Publication 5</a>
+          {% endif %}
+          <br>
+
+          <strong>Bio:</strong>
+          <br>
+          <p>{{ user.user_profile.bio}} </p>
+        </div>
+        
+        <nav class="level is-mobile">
+          <div class="level-left">
+            <a class="level-item">
+              <span class="icon is-large">
+                <a href="{{ user.user_profile.linked_in }}"> <i class="fa-brands fa-linkedin"></i> </a>
+              </span>
+            </a>
+            <a class="level-item">
+              <span class="icon is-large">
+                <a href="mailto:{{user.email}}"> <i class="fa-solid fa-envelope"></i> </a>
+              </span>
+            </a>
+            <a class="level-item">
+              <span class="icon is-large">
+                <a href="{{ user.user_profile.university_profile }}"> <i class="fa-solid fa-building-columns"></i> </a>
+              </span>
+            </a>
+          </div>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} My Submissions {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li><a href="javascript:history.back()" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <span><strong>Filtered By</strong>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>My Submissions</strong>
+        </span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-book"></i>
+        </span>
+
+      </a></li>
+
+  </ul>
+</nav>
+
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline  is-mobile">
+
+      {% for species in species_list %}
+
+      <div class="column is-one-third">
+        <div class="card csscard  has-background-light">
+          <div class="content cardcontent">
+            <p class="title is-4">{{ species.genus.genus_name }} {{ species.species_name_latin }}</p>
+          </div>
+          <div class="card-image csscardimage">
+            <p class="subtitle is-6"> Male </p>
+            {% if species.img_uri_male%}
+            <figure class="is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{{ species.img_uri_male.url }}">
+            </figure>
+            {% else %}
+            <figure class="is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{% static 'home/images/male_frog.jpg' %}">
+            </figure>
+            {% endif %}
+
+
+            <p class="subtitle is-6"> Female </p>
+            {% if species.img_uri_female%}
+            <figure class="is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{{ species.img_uri_female.url}}" </figure>
+              {% else %}
+              <figure class="is-align-items-center is-justify-content-center image is-3by2">
+                <img src="{% static 'home/images/female_frog.jpg' %}">
+              </figure>
+              {% endif %}
+          </div>
+          <div class="content cardcontent">
+
+            <p class="subtitle is-6"><strong>Submitted by: </strong> <a
+                href="{% url 'home:profile_page' species.user.pk %}">{{species.user.username }}</a></p>
+            <p class="subtitle is-6"><strong>Parity Mode: </strong>{{ species.parity_mode.parity_mode_desc }}</p>
+            <p class="subtitle is-6"><strong>Conservation Status: </strong> {{ species.iucn.iucn_status }} </p>
+            <p class="subtitle is-6"><strong>Activity: </strong> {% for activities in species.activity_set.all %}
+              {{ activities.activity_kind }},
+              {% endfor %}</p>
+
+            <p class="subtitle is-6"><strong>Habitat: </strong>{% for micro_habitats in species.micro_habitat_set.all %}
+              {{ micro_habitats.micro_habitat_name }},
+              {% endfor %}</p>
+
+
+          </div>
+
+          {% if user.is_authenticated and user.is_staff %}
+          <footer class="card-footer has-background-warning">
+
+            <a href="{% url 'home:approve_species' species.pk %}" class='card-footer-item'>
+              (Approve Species)
+            </a>
+            <a href="{% url 'home:edit_species' species.pk %}" class='card-footer-item'>
+              (Edit Species)
+            </a>
+          </footer>
+          {% endif %}
+          <footer class="card-footer has-background-warning">
+            {% if user.is_authenticated and user.is_staff %}
+            <a href="{% url 'home:delete_species' species.pk %}" class='card-footer-item'>
+              (Delete Species)
+            </a>
+            <a href="{% url 'home:species_pdf_creator' species.pk %}" class='card-footer-item'>
+              (Generate PDF)
+            </a>
+            {% endif %}
+            <a href="{% url 'home:species_detail' species.pk %}" class='card-footer-item'>(More info)</a>
+          </footer>
+        </div>
+      </div>
+
+      {% endfor %}
+
+
+    </div>
+
+
+  </div>
+  </div>
+</section>
+
+{% endblock %}

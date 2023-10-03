@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %} Population Trend Search {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-arrow-up-right-dots"></i>
+        </span>
+        <span><strong>Population Trend</strong>
+        </span></a></li>
+
+  </ul>
+</nav>
+
+<section class="section">
+  <div class="container">
+
+    <div class="columns is-multiline is-centered is-mobile">
+      {% for pop_trend in pop_trend_list %}
+      <div class="column is-one-quarter has-text-centered">
+
+        {% if pop_trend.pop_trend_status == 'Decreasing'%}
+        <div class="card csscard has-background-danger">
+          
+          {% elif pop_trend.pop_trend_status == 'Increasing' %}
+          <div class="card csscard has-background-success">
+
+            {% elif pop_trend.pop_trend_status == 'Stable' %} 
+            <div class="card csscard has-background-warning">
+
+              {% else %}
+              <div class="card csscard csscard-nav has-background-light">
+                {% endif %}
+
+                <div class="card-image csscardimage-nav  csscardimage">
+                  <figure class="image is-960x960">
+                    <img src="">
+                  </figure>
+                </div>
+
+                <div class='content'>
+                  <p class='title is-4'>{{ pop_trend.pop_trend_status }}</p>
+                </div>
+
+                <div class='content'>
+                </div>
+
+                <footer class='card-footer'>
+                  <a href="{% url 'home:species_pop_trend' pop_trend_id=pop_trend.pop_trend_id %}"
+                    class='card-footer-item'><strong>Species</strong></a>
+                </footer>
+                
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+</section>
+{% endblock %}

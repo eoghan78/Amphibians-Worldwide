@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/home/css/myui.css">
+  <script src="https://kit.fontawesome.com/ef76ad224f.js" crossorigin="anonymous"></script>
+  <title>{% block title %} Amphibians Worldwide {% endblock %}</title>
+</head>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item">
+
+      <a class="button is-info has-text-success" href="{% url 'home:index' %}"> <span class="icon-text">
+          <span class="icon">
+            <i class="fa-solid fa-frog"></i>
+          </span>
+          <span>Amphibians Worldwide</span>
+          <span class="icon">
+            <i class="fa-solid fa-earth-europe"></i>
+          </span>
+        </span>
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+  </div>
+
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <div class="buttons">
+        {% if user.is_authenticated %}
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button is-success has-text-info" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>Account</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a href="{% url 'home:mypage'  %}" class="dropdown-item">
+                <strong>My Page</strong>
+              </a>
+              <a href="{% url 'home:my_submissions' user=user.pk %}" class="dropdown-item">
+                <strong>My Submissions</strong>
+              </a>
+              <a href="{% url 'home:update_account' %}" class="dropdown-item">
+                <strong>Update Account</strong>
+              </a>
+              <a href="{% url 'home:submit_species' %}" class="dropdown-item">
+                <strong>Submit Species</strong>
+              </a>
+
+              {% if user.is_staff %}
+              <a href="{% url 'home:species_unverified' %}" class="dropdown-item">
+                <strong>Unverified Species</strong>
+              </a>
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <a class="button is-info has-text-success" href="{% url 'home:logout' %}">
+          Logout
+        </a>
+        {% else %}
+        <a class="button is-success has-text-info" href="{% url 'home:signup' %}">
+          Sign Up
+        </a>
+        <a class="button is-info has-text-success" href="{% url 'home:login' %}">
+          Login
+        </a>
+        {% endif %}
+
+
+
+      </div>
+    </div>
+  </div>
+  </div>
+</nav>
+
+
+<body>
+  <!-- <script src="/static/home/js/tablesort.js"> </script> -->
+  {% block content %}
+
+  {% endblock %}
+</body>
+
+
+<footer class="footer px-5 py-1">
+  <div class="navbar-item">
+    <div class="buttons">
+      <a class="button is-success has-text-info" href="mailto: eeecs@qubsupport.com">
+        Help
+      </a>
+
+      <a class="button is-info has-text-success" href="{% url 'home:iNaturalist' %}">
+        iNaturalist
+      </a>
+    </div>
+  </div>
+
+
+
+</footer>
+
+</html>

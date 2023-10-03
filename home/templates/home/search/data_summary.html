@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Dataset Summary {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-table"></i></span>
+        <span> <strong>Data Summary</strong></span></a></li>
+
+  </ul>
+</nav>
+
+<section>
+  <div class="container">
+    <div class="section">
+      <div class="columns is-multiline is-mobile">
+
+        <div class="column is-one-half">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr class="th is-selected">
+                <th>Taxonomy Breakdown</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Number of Species:</th>
+                <td>{{ num_species }}</td>
+              </tr>
+              <tr>
+                <th>Number of Genus:</th>
+                <td>{{ num_genus }}</td>
+              </tr>
+              <tr>
+                <th>Number of Families:</th>
+                <td>{{ num_families }}</td>
+              </tr>
+              <tr>
+                <th>Number of Orders:</th>
+                <td>{{ num_orders }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="column is-one-half">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr class="th is-selected">
+                <th>Variable Breakdown</th>
+                <th>Ranking Descending</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Population Trend:</th>
+                {% for pop_trend in pop_trend_ranking %}
+                <td>{{ pop_trend.pop_trend_status }}</td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <th>Activity: </th>
+                {% for activity in activity_ranking %}
+                <td>{{ activity.activity_kind }}</td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <th>Parity Mode:</th>
+                {% for parity_mode in parity_mode_ranking %}
+                <td>{{ parity_mode.parity_mode_desc}}</td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <th>Microhabitat:</th>
+                {% for micro_habitat in microhabitat_ranking %}
+                <td>{{ micro_habitat.micro_habitat_name }}</td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <th>IUCN:</th>
+                {% for iucn in iucn_ranking %}
+                <td>{{ iucn.iucn_status }}</td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <th>Nesting Site:</th>
+                {% for nesting_site in nesting_site_ranking %}
+                <td>{{ nesting_site.nesting_site_desc }}</td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr class="th is-selected">
+                <th>Geographical Representation</th>
+                <th>Ranking Descending</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>By Continent:</th>
+                {% for continent in continent_ranking %}
+                {% if continent.continent_name == 'Nocontinent' %}
+                <td>No Data</td>
+                {% elif continent.continent_name == 'Central America' %}
+                <td>The Americas</td>
+                {% else %}
+                <td>{{ continent.continent_name }}</td>
+                {% endif %}
+                {% endfor %}
+              </tr>
+
+              <tr>
+                <th>By Country:</th>
+                {% for country in country_ranking %}
+                {% if country.country_name == 'Nocountry' %}
+                <td>No Data</td>
+                {% else %}
+                <td>{{ country.country_name }}</td>
+                {% endif %}
+                {% endfor %}
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+{% endblock %}

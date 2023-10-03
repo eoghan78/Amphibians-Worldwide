@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Continent Search {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li><a href="{% url 'home:location' %}"><span class="icon is-small">
+          <i class="fa-solid fa-location-pin"></i>
+        </span>
+        <span><strong>Location</strong>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i> </span>
+        <span> <strong>Continent</strong>
+        </span></a></li>
+
+  </ul>
+</nav>
+
+
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline  is-mobile">
+      {% for continent in continent_list %}
+      <div class="column is-one-quarter has-text-centered">
+        <div class="card csscard csscard-nav has-background-light">
+
+          <div class="card-image csscardimage-nav csscardimage">
+            {% if continent.continent_name == 'Africa' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/african.jpg' %}">
+            </figure>
+
+            {% elif continent.continent_name == 'Asia' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/asian.jpg' %}">
+            </figure>
+
+            {% elif continent.continent_name == 'Central America' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/central_american.jpg' %}">
+            </figure>
+
+            {% elif continent.continent_name == 'Europe' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/european.jpg' %}">
+            </figure>
+
+            {% elif continent.continent_name == 'Nocontinent' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/male_frog.jpg' %}">
+            </figure>
+
+            {% elif continent.continent_name == 'North America' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/north_american.jpg' %}">
+            </figure>
+
+            {% elif continent.continent_name == 'Oceania' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/oceania.jpg' %}">
+            </figure>
+
+            {% elif continent.continent_name == 'South America' %}
+            <figure class="image is-960x960">
+              <img class="is-rounded" src="{% static 'home/images/south_american.jpg' %}">
+            </figure>
+
+            {% else %}
+            <figure class="image is-960x960">
+              <img src="">
+            </figure>
+            {% endif %}
+          </div>
+
+          <div class='content'>
+            {% if continent.continent_name == 'Nocontinent' %}
+            <p class='title is-4'>Not recorded</p>
+            {% else %}
+            {% if continent.continent_name == 'Central America' %}
+            <p class='title is-4'>The Americas</p>
+            {% else %}
+            <p class='title is-4'>{{ continent.continent_name }}</p>
+            {% endif %}
+            {% endif %}
+          </div>
+
+          <div class='content'>
+          </div>
+
+          <footer class='card-footer has-background-warning'>
+            <a href="{% url 'home:species_continent' continent.continent_id %}"
+              class='card-footer-item'><strong>Species</strong></a>
+          </footer>
+          
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+</section>
+
+{% endblock %}

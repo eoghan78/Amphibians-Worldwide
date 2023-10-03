@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Species {% endblock %}
+{% block content %}
+
+<article class="panel is-success">
+  <p class="panel-heading">
+  </p>
+</article>
+
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+  <ul>
+
+    <li><a href="{% url 'home:index' %}"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Amphibians Worldwide</strong></span>
+        <span class="icon is-small">
+          <i class="fa-solid fa-earth-europe"></i>
+        </span></a></li>
+
+    <li><a href="javascript:history.back()" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <span><strong>Filtered By</strong>
+        </span></a></li>
+
+    <li class="is-active"><a href="#" aria-current="page"><span class="icon is-small">
+          <i class="fa-solid fa-frog"></i>
+        </span>
+        <span><strong>Species</strong>
+        </span></a></li>
+
+  </ul>
+</nav>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline  is-mobile">
+
+      {% for species in species_list %}
+      {% if species.verif_status == True %}
+      <div class="column is-one-third">
+        <div class="card csscard has-background-light">
+
+          <div class="content cardcontent">
+            <p class="title is-4">{{ species.genus.genus_name }} {{ species.species_name_latin }}</p>
+          </div>
+
+          <div class="card-image csscardimage">
+            <p class="subtitle is-6"> <strong>Male</strong></p>
+            {% if species.img_uri_male%}
+            <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{{ species.img_uri_male.url }}">
+            </figure>
+            {% else %}
+            <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{% static 'home/images/male_frog.jpg' %}">
+            </figure>
+            {% endif %}
+
+            <p class="subtitle is-6"><strong>Female</strong></p>
+            {% if species.img_uri_female%}
+
+            <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{{ species.img_uri_female.url }}">
+            </figure>
+            {% else %}
+
+            <figure class="is-flex is-align-items-center is-justify-content-center image is-3by2">
+              <img src="{% static 'home/images/female_frog.jpg' %}">
+            </figure>
+            {% endif %}
+          </div>
+
+          <div class="content cardcontent">
+            <p class="subtitle is-6"><strong>Submitted by: </strong> <a
+                href="{% url 'home:profile_page' species.user.pk %}">{{species.user.username }}</a></p>
+            {% if species.parity_mode.parity_mode_desc %}
+            <p class="subtitle is-6"><strong>Parity Mode: </strong>{{ species.parity_mode.parity_mode_desc }}</p>
+            {% else %}
+            <p class="subtitle is-6"><strong>Parity Mode: </strong>No data</p>
+            {% endif %}
+
+            {% if species.iucn.iucn_status %}
+            <p class="subtitle is-6"><strong>Conservation Status: </strong> {{ species.iucn.iucn_status }} </p>
+            {% else %}
+            <p class="subtitle is-6"><strong>Conservation Status: </strong>No data</p>
+            {% endif %}
+
+            {% if species.activity_set.all %}
+            <p class="subtitle is-6"><strong>Activity: </strong> {% for activities in species.activity_set.all %}
+              {{ activities.activity_kind }},
+              {% endfor %}</p>
+            {% else %}
+            <p class="subtitle is-6"><strong>Activity: </strong>No data</p>
+            {% endif %}
+            {% if species.micro_habitat_set.all %}
+            <p class="subtitle is-6"><strong>Habitat: </strong>{% for micro_habitats in species.micro_habitat_set.all %}
+              {{ micro_habitats.micro_habitat_name }},
+              {% endfor %}</p>
+            {% else %}
+            <p class="subtitle is-6"><strong>Habitat: </strong>No data</p>
+            {% endif %}
+          </div>
+
+          {% if user.is_authenticated and user.is_staff %}
+          <footer class="card-footer has-background-warning">
+
+            <a href="{% url 'home:approve_species' species.pk %}" class='card-footer-item'>
+              (Approve Species)
+            </a>
+
+            <a href="{% url 'home:edit_species' species.pk %}" class='card-footer-item'>
+              (Edit Species)
+            </a>
+
+          </footer>
+          {% endif %}
+          <footer class="card-footer has-background-warning">
+            {% if user.is_authenticated and user.is_staff %}
+            <a href="{% url 'home:delete_species' species.pk %}" class='card-footer-item'>
+              (Delete Species)
+            </a>
+
+            <a href="{% url 'home:species_pdf_creator' species.pk %}" class='card-footer-item'>
+              (Generate PDF)
+            </a>
+
+            {% endif %}
+            <a href="{% url 'home:species_detail' species.pk %}" class='card-footer-item'>(More info)</a>
+          </footer>
+          
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+
+    </div>
+
+    {% for contact in page_obj %}
+
+    {{ contact.full_name|upper }}<br>
+
+    {% endfor %}
+
+    <div class="pagination">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+  </div>
+
+  </div>
+
+</section>
+
+{% endblock %}
